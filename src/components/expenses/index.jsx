@@ -1,37 +1,40 @@
+import { useState, useEffect } from "react";
 import ExpensesCard from "../expensesCard";
+import YearFilter from "../yearFilter/index";
+import { ExpensesFlex, ExpensesGrid, ExpensesTitle } from "./styles";
 
-const Expenses = () => {
-  const expensesArray = [
-    {
-      id: 1,
-      title: "Macbook Air M1",
-      price: 1535.49,
-      date: new Date(2022, 1, 15),
-    },
-    {
-      id: 2,
-      title: "Galaxy S22 Ultra",
-      price: 1537.98,
-      date: new Date(2021, 11, 15),
-    },
-    {
-      id: 3,
-      title: "Smart TV",
-      price: 3589.73,
-      date: new Date(2020, 7, 22),
-    },
-  ];
+const Expenses = (props) => {
+  const [year, setYear] = useState("2022");
+  const [filteredArray, setFilteredArray] = useState(
+    props.expensesArray.filter(
+      (element) => element.date.getFullYear().toString() === year
+    )
+  );
+
+  useEffect(() => {
+    setFilteredArray(
+      props.expensesArray.filter(
+        (element) => element.date.getFullYear().toString() === year
+      )
+    );
+  }, [props.expensesArray, year]);
 
   return (
     <>
-      {expensesArray.map((element) => (
-        <ExpensesCard
-          key={element.id}
-          title={element.title}
-          date={element.date}
-          price={element.price}
-        />
-      ))}
+      <ExpensesFlex>
+        <ExpensesTitle>Your Expenses</ExpensesTitle>
+        <YearFilter expensesArray={props.expensesArray} yearSetter={setYear} />
+      </ExpensesFlex>
+      <ExpensesGrid>
+        {filteredArray.map((element) => (
+          <ExpensesCard
+            key={element.id}
+            title={element.title}
+            date={element.date}
+            price={element.price}
+          />
+        ))}
+      </ExpensesGrid>
     </>
   );
 };
