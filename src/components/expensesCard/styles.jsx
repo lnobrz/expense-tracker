@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export const CardContainer = styled.div`
   height: auto;
-  width: 600px;
   background: white;
   border: 1px solid #bbbbbb;
   box-shadow: 0px 4px 10px 4px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  margin: 0px 25px;
 `;
 
 export const CardFlexContainer = styled.div`
