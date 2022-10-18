@@ -33,6 +33,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #F5F5F5;
 }
 ol, ul {
 	list-style: none;
@@ -48,6 +49,52 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+.titleInputLabel{
+	grid-column: 1;
+	grid-row: 1;
+}
+
+.titleInput{
+	grid-column: 1 / 5;
+	grid-row: 2;
+}
+
+.priceInputLabel{
+	grid-column: 5;
+	grid-row: 1;
+}
+
+.priceInput{
+	grid-column: 5 / 9;
+	grid-row: 2;
+}
+
+.dateInputLabel{
+	grid-column: 1;
+	grid-row: 3;
+}
+
+.dateInput{
+	grid-column: 1 / 5;
+	grid-row: 4;
+}
+
+.cancelButton{
+	background-color: #F8F9FD !important;
+	color: #272639 !important;
+	grid-column: 9 / 11;
+	grid-row: 5;
+}
+
+.addButton{
+	grid-column: 11 / 13;
+	grid-row: 5;
+}
+
+.newExpenseButton{
+	grid-column: 5 / 9;
 }
 `;
 
