@@ -14,7 +14,9 @@ const YearFilter = (props) => {
   return (
     <YearSelector onChange={handleFilterChange}>
       {yearsArray.map((element) => (
-        <option value={element}>{element}</option>
+        <option key={element} value={element}>
+          {element}
+        </option>
       ))}
     </YearSelector>
   );
