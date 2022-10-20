@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FormContainer, FormInput, InputLabel, FormButton } from "./styles";
 
 const ExpensesForm = (props) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
-  const [titleValue, setTitleValue] = useState("");
-  const [priceValue, setPriceValue] = useState("");
-  const [dateValue, setDateValue] = useState("");
+  const title = useRef(undefined);
+  const price = useRef(undefined);
+  const date = useRef(undefined);
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -14,21 +14,21 @@ const ExpensesForm = (props) => {
 
   const HandlesubmitClick = (event) => {
     event.preventDefault();
-    titleValue &&
-      priceValue &&
-      dateValue &&
+    title &&
+      price &&
+      date &&
       props.expensesArraySetter([
         ...props.expensesArray,
         {
           id: Math.floor(Math.random() * (1000 - 5 + 1) + 5),
-          title: titleValue,
-          price: priceValue,
-          date: new Date(dateValue),
+          title: title.current.value,
+          price: price.current.value,
+          date: new Date(date.current.value),
         },
       ]);
-    setTitleValue("");
-    setPriceValue("");
-    setDateValue("");
+    title.current.value = "";
+    price.current.value = "";
+    date.current.value = "";
     setIsFormOpened(false);
   };
 
@@ -46,8 +46,7 @@ const ExpensesForm = (props) => {
               id="title"
               name="title"
               className="titleInput"
-              value={titleValue}
-              onChange={(event) => setTitleValue(event.target.value)}
+              ref={title}
             />
             <br />
             <InputLabel for="price" className="priceInputLabel" required>
@@ -59,8 +58,7 @@ const ExpensesForm = (props) => {
               id="price"
               name="price"
               className="priceInput"
-              value={priceValue}
-              onChange={(event) => setPriceValue(event.target.value)}
+              ref={price}
             />
             <br />
             <InputLabel for="date" className="dateInputLabel" required>
@@ -72,8 +70,7 @@ const ExpensesForm = (props) => {
               id="date"
               name="date"
               className="dateInput"
-              value={dateValue}
-              onChange={(event) => setDateValue(event.target.value)}
+              ref={date}
             />
             <FormButton className="cancelButton" onClick={handleClick}>
               Cancel
