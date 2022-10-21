@@ -3,33 +3,55 @@ import { FormContainer, FormInput, InputLabel, FormButton } from "./styles";
 
 const ExpensesForm = (props) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
-  const title = useRef(undefined);
-  const price = useRef(undefined);
-  const date = useRef(undefined);
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    setIsFormOpened(!isFormOpened);
+  const formValues = {
+    title: useRef(undefined),
+    titleIsValid: false,
+    price: useRef(undefined),
+    priceIsValid: false,
+    date: useRef(undefined),
+  };
+
+  const validateForm = () => {
+    if (
+      formValues.title.current.value.trim() !== "" &&
+      parseFloat(formValues.price.current.value) >= 0
+    ) {
+      formValues.titleIsValid = true;
+      formValues.priceIsValid = true;
+    }
+  };
+
+  const resetValues = () => {
+    formValues.title.current.value = "";
+    formValues.titleIsValid = false;
+    formValues.price.current.value = "";
+    formValues.priceIsValid = false;
+    formValues.date.current.value = "";
   };
 
   const HandlesubmitClick = (event) => {
     event.preventDefault();
-    title &&
-      price &&
-      date &&
+    validateForm();
+    formValues.titleIsValid &&
+      formValues.priceIsValid &&
+      formValues.date &&
       props.expensesArraySetter([
         ...props.expensesArray,
         {
           id: Math.floor(Math.random() * (1000 - 5 + 1) + 5),
-          title: title.current.value,
-          price: price.current.value,
-          date: new Date(date.current.value),
+          title: formValues.title.current.value,
+          price: formValues.price.current.value,
+          date: new Date(formValues.date.current.value),
         },
       ]);
-    title.current.value = "";
-    price.current.value = "";
-    date.current.value = "";
+    resetValues();
     setIsFormOpened(false);
+  };
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setIsFormOpened(!isFormOpened);
   };
 
   return (
@@ -46,7 +68,7 @@ const ExpensesForm = (props) => {
               id="title"
               name="title"
               className="titleInput"
-              ref={title}
+              ref={formValues.title}
             />
             <br />
             <InputLabel for="price" className="priceInputLabel" required>
@@ -58,7 +80,7 @@ const ExpensesForm = (props) => {
               id="price"
               name="price"
               className="priceInput"
-              ref={price}
+              ref={formValues.price}
             />
             <br />
             <InputLabel for="date" className="dateInputLabel" required>
@@ -70,7 +92,7 @@ const ExpensesForm = (props) => {
               id="date"
               name="date"
               className="dateInput"
-              ref={date}
+              ref={formValues.date}
             />
             <FormButton className="cancelButton" onClick={handleClick}>
               Cancel
