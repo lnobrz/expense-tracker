@@ -54,31 +54,57 @@ table {
 .titleInputLabel{
 	grid-column: 1;
 	grid-row: 1;
+	@media (max-width: 600px){
+		grid-column: auto;
+	}
 }
 
 .titleInput{
 	grid-column: 1 / 5;
 	grid-row: 2;
+	@media (max-width: 600px){
+		grid-column: auto;
+	}
 }
 
 .priceInputLabel{
 	grid-column: 5;
 	grid-row: 1;
+
+	@media (max-width: 600px){
+		grid-column: auto;
+		grid-row: 3;
+	}
 }
 
 .priceInput{
 	grid-column: 5 / 9;
 	grid-row: 2;
+
+	@media (max-width: 600px){
+		grid-column: auto;
+		grid-row: 4;
+	}
 }
 
 .dateInputLabel{
 	grid-column: 1;
 	grid-row: 3;
+
+	@media (max-width: 600px){
+		grid-column: auto;
+		grid-row: 5;
+	}
 }
 
 .dateInput{
 	grid-column: 1 / 5;
 	grid-row: 4;
+
+	@media (max-width: 600px){
+		grid-column: auto;
+		grid-row: 6;
+	}
 }
 
 .cancelButton{
@@ -86,11 +112,31 @@ table {
 	color: #272639 !important;
 	grid-column: 9 / 11;
 	grid-row: 5;
+
+	@media (max-width: 840px) {
+		grid-column: 7 / 10;
+	}
+
+	@media (max-width: 600px) {
+		grid-column: auto;
+		grid-row: 7;
+		margin-top: 30px;
+	}
 }
 
 .addButton{
 	grid-column: 11 / 13;
 	grid-row: 5;
+
+	@media (max-width: 840px) {
+		grid-column: 10 / 13;
+	}
+
+	@media (max-width: 600px) {
+		grid-column: auto;
+		grid-row: 8;
+		margin: 5px;
+	}
 }
 
 .newExpenseButton{
