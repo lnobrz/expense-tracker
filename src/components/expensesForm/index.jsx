@@ -1,8 +1,18 @@
-import { useState, useRef } from "react";
-import { FormContainer, FormInput, InputLabel, FormButton } from "./styles";
+import { useState, useRef, useContext } from "react";
+import {
+  FormContainer,
+  FormInput,
+  InputLabel,
+  FormButton,
+  ButtonContainer,
+} from "./styles";
+import { UserContext } from "../../context/expensesContext";
+import { InvalidInputModal } from "../modals";
 
-const ExpensesForm = (props) => {
+const ExpensesForm = () => {
+  const expenses = useContext(UserContext);
   const [isFormOpened, setIsFormOpened] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const formValues = {
     title: useRef(undefined),
@@ -10,15 +20,18 @@ const ExpensesForm = (props) => {
     price: useRef(undefined),
     priceIsValid: false,
     date: useRef(undefined),
+    dateIsValid: false,
   };
 
   const validateForm = () => {
     if (
       formValues.title.current.value.trim() !== "" &&
-      parseFloat(formValues.price.current.value) >= 0
+      parseFloat(formValues.price.current.value) >= 0 &&
+      formValues.date.current.value !== ""
     ) {
       formValues.titleIsValid = true;
       formValues.priceIsValid = true;
+      formValues.dateIsValid = true;
     }
   };
 
@@ -33,11 +46,13 @@ const ExpensesForm = (props) => {
   const HandlesubmitClick = (event) => {
     event.preventDefault();
     validateForm();
-    formValues.titleIsValid &&
+    if (
+      formValues.titleIsValid &&
       formValues.priceIsValid &&
-      formValues.date &&
-      props.expensesArraySetter([
-        ...props.expensesArray,
+      formValues.dateIsValid
+    ) {
+      expenses.setter([
+        ...expenses.expenses,
         {
           id: Math.floor(Math.random() * (1000 - 5 + 1) + 5),
           title: formValues.title.current.value,
@@ -45,8 +60,11 @@ const ExpensesForm = (props) => {
           date: new Date(formValues.date.current.value),
         },
       ]);
-    resetValues();
-    setIsFormOpened(false);
+      resetValues();
+      setIsFormOpened(false);
+    } else {
+      setOpenModal(true);
+    }
   };
 
   const handleClick = (event) => {
@@ -54,12 +72,28 @@ const ExpensesForm = (props) => {
     setIsFormOpened(!isFormOpened);
   };
 
+  const handleModalClick = (event) => {
+    event.preventDefault();
+    setOpenModal(false);
+  };
+
   return (
     <>
+      {openModal && (
+        <InvalidInputModal
+          handler={handleModalClick}
+          message1={
+            "Ooops... you've filled on or more of the input fields with invalid values."
+          }
+          message2={
+            "Check if you've filled all of the inputs fields and if the price field contains a number greater than 0."
+          }
+        />
+      )}
       <FormContainer>
         {isFormOpened ? (
           <>
-            <InputLabel for="title" className="titleInputLabel" required>
+            <InputLabel htmlFor="title" className="titleInputLabel" required>
               Title
             </InputLabel>
             <br />
@@ -71,7 +105,7 @@ const ExpensesForm = (props) => {
               ref={formValues.title}
             />
             <br />
-            <InputLabel for="price" className="priceInputLabel" required>
+            <InputLabel htmlFor="price" className="priceInputLabel" required>
               Price
             </InputLabel>
             <br />
@@ -83,7 +117,7 @@ const ExpensesForm = (props) => {
               ref={formValues.price}
             />
             <br />
-            <InputLabel for="date" className="dateInputLabel" required>
+            <InputLabel htmlFor="date" className="dateInputLabel" required>
               Date
             </InputLabel>
             <br />

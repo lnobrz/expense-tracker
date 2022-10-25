@@ -1,29 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ExpensesCard from "../expensesCard";
 import YearFilter from "../yearFilter/index";
 import { ExpensesFlex, ExpensesGrid, ExpensesTitle } from "./styles";
+import { UserContext } from "../../context/expensesContext";
 
-const Expenses = (props) => {
+const Expenses = () => {
+  const expenses = useContext(UserContext);
   const [year, setYear] = useState("2022");
   const [filteredArray, setFilteredArray] = useState(
-    props.expensesArray.filter(
+    expenses.expenses.filter(
       (element) => element.date.getFullYear().toString() === year
     )
   );
 
   useEffect(() => {
     setFilteredArray(
-      props.expensesArray.filter(
+      expenses.expenses.filter(
         (element) => element.date.getFullYear().toString() === year
       )
     );
-  }, [props.expensesArray, year]);
+  }, [expenses.expenses, year]);
 
   return (
     <>
       <ExpensesFlex>
         <ExpensesTitle>Your Expenses</ExpensesTitle>
-        <YearFilter expensesArray={props.expensesArray} yearSetter={setYear} />
+        <YearFilter expensesArray={expenses.expenses} yearSetter={setYear} />
       </ExpensesFlex>
       <ExpensesGrid>
         {filteredArray.map((element) => (
